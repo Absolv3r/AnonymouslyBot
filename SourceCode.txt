@@ -1,0 +1,31 @@
+=== Anonymously bot in python for telegram ===
+
+=== file main.py ===
+
+import telebot
+import os
+from dotenv import load_dotenv
+
+load_dotenv()
+TOKEN = os.getenv('TOKEN')
+
+bot = telebot.TeleBot(TOKEN)
+
+@bot.message_handler(commands=['start'])
+def send_welcome(message):
+    bot.reply_to(message, "Привет! Ты можешь написать сообщение, и оно будет отправлено @Kputoy анонимно")
+
+@bot.message_handler(content_types=['text'])
+def get_text_messages(message):
+    text = message.text
+
+    if text != '/start':
+        bot.send_message('ID вашего профиля', text)
+
+    bot.reply_to(message, 'Сообщение было доставлено!')
+
+bot.polling()
+
+=== file .env ===
+
+TOKEN = "TOKEN Your bot"
